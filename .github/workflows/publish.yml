@@ -9,6 +9,10 @@ on:
         description: "Package version to publish, for example 1.0.1 or v1.0.1"
         required: true
         type: string
+      source_ref:
+        description: "Git ref to build, for example v1.0.0. Defaults to the workflow ref."
+        required: false
+        type: string
       publish_nuget_org:
         description: "Publish to NuGet.org as well as GitHub Packages"
         required: true
@@ -31,6 +35,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref || github.ref }}
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
