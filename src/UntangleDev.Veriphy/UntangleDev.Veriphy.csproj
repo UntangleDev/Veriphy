@@ -14,11 +14,16 @@
     <Description>A C#/.NET SDK for the Veriphy BankWizard and IDAML API surfaces.</Description>
     <PackageTags>veriphy;bankwizard;idaml;aml;kyc;bank-verification</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/UntangleDev/Veriphy</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/UntangleDev/Veriphy</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>Initial SDK release for BankWizard and IDAML.</PackageReleaseNotes>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
   </ItemGroup>
 
