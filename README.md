@@ -10,7 +10,8 @@ The package targets .NET 10 and supports:
 - BankWizard bank account checks
 - IDAML identity, AML, credit, HR, director-search, visa, and related checks
 - IDAML PEP/sanctions monitoring checks
-- Typed request and response models generated from the filtered Veriphy OpenAPI document
+- Idiomatic request models for common workflows
+- Generated Veriphy response models from the filtered OpenAPI document
 
 ## Installation
 
@@ -88,7 +89,9 @@ This package supports these Veriphy operations:
 - IDAML: `GET /IDAML`, `POST /IDAML`
 - IDAML PEP/sanctions monitoring: `GET /IDAML/MONITOR`, `POST /IDAML/MONITOR`
 
-The generated model types are available in `UntangleDev.Veriphy.Models`.
+The clean request models live in `UntangleDev.Veriphy`. The generated Veriphy transfer
+objects remain available in `UntangleDev.Veriphy.Models` for callers that need the exact
+schema shape.
 
 ## BankWizard Examples
 
@@ -104,41 +107,36 @@ Console.WriteLine(result.Reference);
 Run a BankWizard bank account check:
 
 ```csharp
-using UntangleDev.Veriphy.Models;
-
-var application = new CCBankCheckApplicationTO
+var request = new BankWizardCheckRequest
 {
     Reference = "matter-123",
-    CcbankApplicant = new CCBankTO
+    ReturnPdf = true,
+    Applicant = new BankWizardApplicant
     {
-        ApplicantId = "",
+        ApplicantId = "applicant-1",
         DateOfBirth = new DateTimeOffset(1985, 4, 12, 0, 0, 0, TimeSpan.Zero),
         EmailAddress = "applicant@example.com",
         MobileNumber = "07123456789",
-        Names = new List<CCBankNameTO>
+        Names =
         {
-            new()
+            new BankWizardName
             {
                 Forename = "Jane",
-                OtherNames = "",
+                MiddleNames = "Ann",
                 Surname = "Example"
             }
         },
-        Addresses = new List<CCBankAddressTO>
+        Addresses =
         {
-            new()
+            new BankWizardAddress
             {
-                Address1 = "1 Example Street",
-                Address2 = "",
-                Address3 = "",
-                Address4 = "",
-                PostTown = "London",
-                County = "",
-                PostCode = "SW1A 1AA",
+                AddressLine1 = "1 Example Street",
+                Town = "London",
+                Postcode = "SW1A 1AA",
                 Country = "GB"
             }
         },
-        BankDetails = new CCBankDetailsTO
+        BankAccount = new BankAccountDetails
         {
             AccountNumber = "12345678",
             SortCode = "010203",
@@ -148,13 +146,14 @@ var application = new CCBankCheckApplicationTO
 };
 
 VeriphyCCBankCheckResponseTO response =
-    await bankWizard.PerformBankWizardCheckAsync(application, returnPdf: true);
+    await bankWizard.PerformBankWizardCheckAsync(request);
 
 string? encodedPdf = response.ResponseEncodedPdf;
 ```
 
 The BankWizard client adds `AuthenticationTO` and the `CCBANKACC` service code to check
-requests.
+requests. The mapper also fills Veriphy-required empty string fields that are not needed
+by your request.
 
 ## IDAML Examples
 
@@ -170,101 +169,68 @@ Console.WriteLine(result.Reference);
 Run an IDAML check:
 
 ```csharp
-using UntangleDev.Veriphy.Models;
-
-var application = new ApplicationTO
+var request = new IdAmlCheckRequest
 {
     Reference = "matter-456",
-    Applicants = new List<ApplicantTO>
+    ServiceCode = IdAmlServices.IdentityAndAml,
+    ReturnPdf = true,
+    Applicants =
     {
-        new()
+        new IdAmlApplicant
         {
-            ApplicantId = "",
+            ApplicantId = "applicant-1",
             Gender = "F",
             DateOfBirth = new DateTimeOffset(1985, 4, 12, 0, 0, 0, TimeSpan.Zero),
-            MothersMaidenName = "",
-            NationalInsuranceNumber = "",
-            Names = new List<NameTO>
+            Names =
             {
-                new()
+                new IdAmlName
                 {
                     Title = "Ms",
                     Forename = "Jane",
-                    OtherNames = "",
+                    MiddleNames = "Ann",
                     Surname = "Example"
                 }
             },
-            Addresses = new List<AddressTO>
+            Addresses =
             {
-                new()
+                new IdAmlAddress
                 {
-                    Address1 = "1 Example Street",
-                    Address2 = "",
-                    Address3 = "",
-                    Address4 = "",
-                    PostTown = "London",
-                    County = "",
-                    PostCode = "SW1A 1AA",
+                    AddressLine1 = "1 Example Street",
+                    Town = "London",
+                    Postcode = "SW1A 1AA",
                     Country = "GB"
                 }
             },
-            ContactTO = new ContactTO
+            Contact = new IdAmlContact
             {
-                TelephoneNumber = "",
-                AlternativeTelephoneNumber = "",
-                MobileTelephoneNumber = "07123456789",
-                FaxNumber = "",
+                MobilePhoneNumber = "07123456789",
                 EmailAddress = "applicant@example.com"
             },
-            BankTO = new BankTO
+            BankDetails = new IdAmlBankDetails
             {
-                AccountNumber = "",
-                SortCode = ""
-            },
-            DriversLicenceTO = new DriversLicenceTO
-            {
-                LicenceNumber1 = "",
-                LicenceNumber2 = "",
-                LicenceNumber3 = "",
-                LicenceNumber4 = ""
-            },
-            InternationalPassportTO = new InternationalPassportTO
-            {
-                PassportNumber1 = "",
-                PassportNumber2 = "",
-                PassportNumber3 = "",
-                PassportNumber4 = "",
-                PassportNumber5 = "",
-                PassportNumber6 = "",
-                PassportNumber7 = "",
-                PassportNumber8 = "",
-                PassportNumber9 = ""
-            },
-            IdCardTO = EmptyIdCard(),
-            TravelVisaTO = EmptyTravelVisa()
+                AccountNumber = "12345678",
+                SortCode = "010203"
+            }
         }
     }
 };
 
-VeriphyIDAMLResponseTO response = await idAml.PerformIdAmlCheckAsync(
-    application,
-    VeriphyServiceCodes.IDAML,
-    returnPdf: true);
+VeriphyIDAMLResponseTO response = await idAml.PerformIdAmlCheckAsync(request);
 ```
 
 Common IDAML service-code constants:
 
 ```csharp
-VeriphyServiceCodes.IDAMLNOCRED
-VeriphyServiceCodes.CREDACTIVE
-VeriphyServiceCodes.IDAML
-VeriphyServiceCodes.INTID
-VeriphyServiceCodes.HR
-VeriphyServiceCodes.DIRSEARCH
-VeriphyServiceCodes.ROUTE2
-VeriphyServiceCodes.Veriphy360
-VeriphyServiceCodes.VISA
-VeriphyServiceCodes.HRCREDPLUS
+IdAmlServices.AmlNoCredit
+IdAmlServices.CreditActive
+IdAmlServices.IdentityAndAml
+IdAmlServices.InternationalId
+IdAmlServices.HrScreen
+IdAmlServices.DirectorSearch
+IdAmlServices.IdentityCheck
+IdAmlServices.Veriphy360
+IdAmlServices.TravelVisa
+IdAmlServices.HrCreditPlus
 ```
 
 ## IDAML Monitoring Example
@@ -272,73 +238,44 @@ VeriphyServiceCodes.HRCREDPLUS
 Run an IDAML PEP/sanctions monitoring check:
 
 ```csharp
-var monitorApplication = new ApplicationMonitorTO
+var monitorRequest = new IdAmlMonitoringCheckRequest
 {
     Reference = "monitor-789",
-    Applicants = new List<ApplicantMonitorTO>
+    CallbackEmail = "alerts@example.com",
+    CallbackUrl = "https://example.com/veriphy/callback",
+    Applicants =
     {
-        new()
+        new IdAmlApplicant
         {
-            ApplicantId = "",
+            ApplicantId = "applicant-1",
             Gender = "F",
             DateOfBirth = new DateTimeOffset(1985, 4, 12, 0, 0, 0, TimeSpan.Zero),
-            MothersMaidenName = "",
-            NationalInsuranceNumber = "",
-            CallbackEmail = "alerts@example.com",
-            CallbackUrl = "https://example.com/veriphy/callback",
-            Names = new List<NameTO>
+            Names =
             {
-                new()
+                new IdAmlName
                 {
                     Title = "Ms",
                     Forename = "Jane",
-                    OtherNames = "",
+                    MiddleNames = "Ann",
                     Surname = "Example"
                 }
             },
-            Addresses = new List<AddressTO>
+            Addresses =
             {
-                new()
+                new IdAmlAddress
                 {
-                    Address1 = "1 Example Street",
-                    Address2 = "",
-                    Address3 = "",
-                    Address4 = "",
-                    PostTown = "London",
-                    County = "",
-                    PostCode = "SW1A 1AA",
+                    AddressLine1 = "1 Example Street",
+                    Town = "London",
+                    Postcode = "SW1A 1AA",
                     Country = "GB"
                 }
-            },
-            ContactTO = new ContactTO
-            {
-                TelephoneNumber = "",
-                AlternativeTelephoneNumber = "",
-                MobileTelephoneNumber = "",
-                FaxNumber = "",
-                EmailAddress = "applicant@example.com"
-            },
-            BankTO = new BankTO
-            {
-                AccountNumber = "",
-                SortCode = ""
-            },
-            DriversLicenceTO = new DriversLicenceTO
-            {
-                LicenceNumber1 = "",
-                LicenceNumber2 = "",
-                LicenceNumber3 = "",
-                LicenceNumber4 = ""
-            },
-            InternationalPassportTO = EmptyPassport(),
-            IdCardTO = EmptyIdCard(),
-            TravelVisaTO = EmptyTravelVisa()
+            }
         }
     }
 };
 
 VeriphyIDAMLMonitorResponseTO monitorResponse =
-    await idAml.PerformIdAmlMonitorCheckAsync(monitorApplication, returnPdf: false);
+    await idAml.PerformIdAmlMonitorCheckAsync(monitorRequest);
 
 long? monitorId = monitorResponse.ResponseResult?.SanctionResults?.Content?.Data?.Id;
 ```
@@ -351,6 +288,36 @@ Fetch an existing monitoring check:
 VeriphyIDAMLMonitorResponseTO existingMonitor =
     await idAml.GetIdAmlMonitorAsync("veriphy-check-id");
 ```
+
+## Raw Generated DTOs
+
+The idiomatic request models are the recommended API for new code. If you need exact control
+over the Veriphy schema, use the generated transfer objects directly:
+
+```csharp
+using UntangleDev.Veriphy.Models;
+
+var application = new ApplicationTO
+{
+    Reference = "matter-456",
+    Applicants = new List<ApplicantTO>
+    {
+        new()
+        {
+            Gender = "F",
+            DateOfBirth = new DateTimeOffset(1985, 4, 12, 0, 0, 0, TimeSpan.Zero)
+        }
+    }
+};
+
+VeriphyIDAMLResponseTO response = await idAml.PerformIdAmlCheckAsync(
+    application,
+    VeriphyServiceCodes.IDAML,
+    returnPdf: true);
+```
+
+When using raw DTOs, populate the required generated objects and empty string fields yourself.
+The clean request overloads do that mapping for you.
 
 ## Error Handling
 
@@ -366,62 +333,6 @@ catch (VeriphyApiException exception)
     Console.WriteLine(exception.OperationName);
     Console.WriteLine(exception.StatusCode);
     Console.WriteLine(exception.Response);
-}
-```
-
-## Empty Transfer Objects
-
-Veriphy requires many transfer objects to be present even when a service code does not use
-them. Use empty strings for unused fields.
-
-```csharp
-static IDCardTO EmptyIdCard()
-{
-    return new IDCardTO
-    {
-        Line1 = "",
-        Line2 = "",
-        Line3 = "",
-        Line4 = "",
-        Line5 = "",
-        Line6 = "",
-        Line7 = "",
-        Line8 = "",
-        Line9 = "",
-        Line10 = ""
-    };
-}
-
-static TravelVisaTO EmptyTravelVisa()
-{
-    return new TravelVisaTO
-    {
-        Line1 = "",
-        Line2 = "",
-        Line3 = "",
-        Line4 = "",
-        Line5 = "",
-        Line6 = "",
-        Line7 = "",
-        Line8 = "",
-        Line9 = ""
-    };
-}
-
-static InternationalPassportTO EmptyPassport()
-{
-    return new InternationalPassportTO
-    {
-        PassportNumber1 = "",
-        PassportNumber2 = "",
-        PassportNumber3 = "",
-        PassportNumber4 = "",
-        PassportNumber5 = "",
-        PassportNumber6 = "",
-        PassportNumber7 = "",
-        PassportNumber8 = "",
-        PassportNumber9 = ""
-    };
 }
 ```
 

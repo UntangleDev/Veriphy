@@ -54,6 +54,19 @@ public sealed class BankWizardClient : IBankWizardClient
 
     /// <inheritdoc />
     public Task<VeriphyCCBankCheckResponseTO> PerformBankWizardCheckAsync(
+        BankWizardCheckRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        return PerformBankWizardCheckAsync(
+            VeriphyRequestMapper.ToApplicationTO(request),
+            request.ReturnPdf,
+            cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task<VeriphyCCBankCheckResponseTO> PerformBankWizardCheckAsync(
         CCBankCheckApplicationTO application,
         bool returnPdf,
         CancellationToken cancellationToken = default)

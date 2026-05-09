@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <PackageId>UntangleDev.Veriphy</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Authors>UntangleDev</Authors>
     <Company>UntangleDev</Company>
     <Description>A C#/.NET SDK for the Veriphy BankWizard and IDAML API surfaces.</Description>
@@ -18,7 +18,7 @@
     <RepositoryUrl>https://github.com/UntangleDev/Veriphy</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Initial SDK release for BankWizard and IDAML.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add idiomatic BankWizard and IDAML request models while preserving generated DTO overloads.</PackageReleaseNotes>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>

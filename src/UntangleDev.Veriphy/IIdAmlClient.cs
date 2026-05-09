@@ -18,6 +18,13 @@ public interface IIdAmlClient
     /// Performs an IDAML check with the supplied service code.
     /// </summary>
     Task<VeriphyIDAMLResponseTO> PerformIdAmlCheckAsync(
+        IdAmlCheckRequest request,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Performs an IDAML check with the supplied service code.
+    /// </summary>
+    Task<VeriphyIDAMLResponseTO> PerformIdAmlCheckAsync(
         ApplicationTO application,
         string serviceCode,
         bool returnPdf,
@@ -28,6 +35,13 @@ public interface IIdAmlClient
     /// </summary>
     Task<VeriphyIDAMLMonitorResponseTO> GetIdAmlMonitorAsync(
         string checkId,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Performs an IDAML PEP/sanction monitoring check.
+    /// </summary>
+    Task<VeriphyIDAMLMonitorResponseTO> PerformIdAmlMonitorCheckAsync(
+        IdAmlMonitoringCheckRequest request,
         CancellationToken cancellationToken = default);
 
     /// <summary>

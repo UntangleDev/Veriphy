@@ -54,6 +54,20 @@ public sealed class IdAmlClient : IIdAmlClient
 
     /// <inheritdoc />
     public Task<VeriphyIDAMLResponseTO> PerformIdAmlCheckAsync(
+        IdAmlCheckRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        return PerformIdAmlCheckAsync(
+            VeriphyRequestMapper.ToApplicationTO(request),
+            request.ServiceCode,
+            request.ReturnPdf,
+            cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task<VeriphyIDAMLResponseTO> PerformIdAmlCheckAsync(
         ApplicationTO application,
         string serviceCode,
         bool returnPdf,
@@ -88,6 +102,19 @@ public sealed class IdAmlClient : IIdAmlClient
         return _core.ExecuteAsync(
             nameof(GetIdAmlMonitorAsync),
             (client, token) => client.IDAML_GetMonitorAsync(checkId, credentials.Username, credentials.Password, token),
+            cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task<VeriphyIDAMLMonitorResponseTO> PerformIdAmlMonitorCheckAsync(
+        IdAmlMonitoringCheckRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        return PerformIdAmlMonitorCheckAsync(
+            VeriphyRequestMapper.ToApplicationMonitorTO(request),
+            request.ReturnPdf,
             cancellationToken);
     }
 

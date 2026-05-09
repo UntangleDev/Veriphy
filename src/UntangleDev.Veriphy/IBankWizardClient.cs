@@ -18,6 +18,13 @@ public interface IBankWizardClient
     /// Performs a BankWizard bank account check.
     /// </summary>
     Task<VeriphyCCBankCheckResponseTO> PerformBankWizardCheckAsync(
+        BankWizardCheckRequest request,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Performs a BankWizard bank account check.
+    /// </summary>
+    Task<VeriphyCCBankCheckResponseTO> PerformBankWizardCheckAsync(
         CCBankCheckApplicationTO application,
         bool returnPdf,
         CancellationToken cancellationToken = default);
