@@ -1,9 +1,13 @@
 # UntangleDev.Veriphy
 
-UntangleDev.Veriphy is a .NET client library for Veriphy's BankWizard and IDAML APIs.
+UntangleDev.Veriphy is an unofficial .NET client library for Veriphy's BankWizard and IDAML APIs.
 It wraps the generated OpenAPI client with typed clients for common workflows, dependency
 injection registration, request authentication, service-code helpers, and consistent API
 error handling.
+
+This package is independently maintained by UntangleDev. It is not an official Veriphy package
+and is not affiliated with, sponsored by, or endorsed by Veriphy. You need your own Veriphy API
+credentials and API access from Veriphy to use it.
 
 The package targets .NET 10 and supports:
 
