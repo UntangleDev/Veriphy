@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/UntangleDev.Veriphy/UntangleDev.Veriphy.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/UntangleDev.Veriphy.Tests/UntangleDev.Veriphy.Tests.csproj" />
+  </Folder>
+</Solution>

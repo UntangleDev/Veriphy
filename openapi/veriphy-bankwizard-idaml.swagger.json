@@ -1,0 +1,3329 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "Veriphy BankWizard and IDAML API",
+    "description": "Filtered from https://test.veriphy.co.uk/api/docs/v1 for UntangleDev.Veriphy."
+  },
+  "host": "test.veriphy.co.uk",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/BankWizard": {
+      "get": {
+        "tags": [
+          "BankWizard"
+        ],
+        "summary": "Retrieve the results of a fraud check.",
+        "description": "Retrieves a check that has already been placed",
+        "operationId": "BankWizard_Get",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "checkID",
+            "in": "query",
+            "description": "Veriphy Check ID of the check to be retrieved",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Service credentials username",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "Service credentials password",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.CCBank.VeriphyCCBankCheckResponseTO"
+            }
+          },
+          "404": {
+            "description": "NotFound"
+          },
+          "400": {
+            "description": "BadRequest",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "BankWizard"
+        ],
+        "summary": "Perform Banking checks.",
+        "description": "** Access to this service is restricted. Please contact [Veriphy Support](mailto:support@veriphy.co.uk) to discuss your requirements and obtain access. **\r\n\r\n#VeriphyCCBankCheckRequestTO\r\nVeriphyCCBankCheckRequestTO is a DTO that contains all the information required by the service to perform Bank check. It consists of 3 objects:\r\n* VeriphyServiceTO\r\n* AuthenticationTO\r\n* CCBankCheckApplicationTO\r\n\r\n##VeriphyServiceTO\r\nYou must specify the service codes in the `VeriphyServiceTO` object. Valid service codes are:\r\n* **CCBANKACC** - Performs bank check\r\n\r\n##AuthenticationTO\r\nSpecify your username and password to access the service. Credentials can be obtained from [Veriphy Support](mailto:support@veriphy.co.uk)\r\n\r\n##CCBankCheckApplicationTO\r\nThe CCBankCheckApplicationTO object contains the details about the individual and account to be checked. Each request requires all the transfer objects to be supplied even if they will not be used in the check. Please supply empty string values for unused transfer objects. Refer to the Parameters section below for the request model and an example request value.",
+        "operationId": "BankWizard_performCheck",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "check",
+            "in": "body",
+            "description": "The check to be performed",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.CCBank.VeriphyCCBankCheckRequestTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.CCBank.VeriphyCCBankCheckResponseTO"
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/IDAML": {
+      "get": {
+        "tags": [
+          "IDAML"
+        ],
+        "summary": "Retrieve an existing ID/AML check.",
+        "description": "Retrieves a check that has already been placed",
+        "operationId": "IDAML_Get",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "checkID",
+            "in": "query",
+            "description": "Veriphy Check ID of the check to be retrieved",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "Service credentials username",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "Service credentials password",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.VeriphyIDAMLResponseTO"
+            }
+          },
+          "404": {
+            "description": "NotFound"
+          },
+          "400": {
+            "description": "BadRequest",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "IDAML"
+        ],
+        "summary": "Perform an ID/AML check.",
+        "description": "#VeriphyIDAMLRequestTO\r\nVeriphyIDAMLRequestTO is a DTO that contains all the information required by the service to perform an identity check. It consists of 3 objects:\r\n* VeriphyServiceTO\r\n* AuthenticationTO\r\n* ApplicationTO\r\n\r\n##VeriphyServiceTO\r\nYou must specify the service code in the `VeriphyServiceTO` object. Valid service codes are:\r\n* **IDAMLNOCRED** - Anti-money Laundering Check\r\n* **CREDACTIVE** - Credit Screen\r\n* **IDAML** - AML and Credit Screen\r\n* **INTID** - International ID Check\r\n* **HR** - HR Screen\r\n* **DIRSEARCH** - Director search\r\n* **ROUTE2** - Identity Check\r\n* **360** - Veriphy 360\r\n* **VISA** - Travel Visa Check\r\n* **HRCREDPLUS** - HR Credit Screen Plus\r\n\r\nA formatted PDF can also be returned by the API - simply set the `VeriphyServiceTO` *returnPDF* property to _true_ to receive the PDF as a Base64 encoded string.\r\n\r\n##AuthenticationTO\r\nSpecify your username and password to access the service. Credentials can be obtained from [Veriphy Support](mailto:support@veriphy.co.uk)\r\n\r\n##ApplicationTO\r\nThe ApplicationTO object contains the details about the individual to be checked. Each request requires all the transfer objects to be supplied even if they will not be used in the check. Please supply empty string values for unused transfer objects. Refer to the Parameters section below for the request model and an example request value.\r\n* **All** `ApplicantTO` objects must contain a `NameTO`, `Gender` and `DOB`\r\n* IDAML/IDAMLNOCRED/ROUTE2 must contain an `AddressTO` with optional `ContactTO`, `NationalInsuranceNumber`, `InternationalPassportTO` and `DrivingLicenceTO` supported.\r\n* CREDACTIVE must contain an `AddressTO` object. No other objects are required/supported.\r\n* INTID supports optional `ContactTO`, `NationalInsuranceNumber`, `InternationalPassportTO`, `DrivingLicenceTO` and `IDCardTO` objects. `AddressTO` is not required/supported on this check.\r\n* HR must contain an `AddressTO` with optional `ContactTO`, `NationalInsuranceNumber`, `InternationalPassportTO`, `DrivingLicenceTO` and `BankTO` supported.\r\n* DIRSEARCH must contain an `AddressTO` object.\r\n* 360  must contain an `AddressTO` with optional `ContactTO`, `NationalInsuranceNumber`, `InternationalPassportTO`, `DrivingLicenceTO`, `IDCardTO`, `TravelVisaTO` and `BankTO` supported.\r\n* VISA supports optional `ContactTO`, `NationalInsuranceNumber`, `InternationalPassportTO`, `DrivingLicenceTO`, `IDCardTO` and `TravelVisaTO` objects. `AddressTO` is not required/supported on this check.\r\n* HRCREDPLUS must contain an `AddressTO` object.  No other objects are required/supported.",
+        "operationId": "IDAML_Post",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "check",
+            "in": "body",
+            "description": "The check to be performed",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.VeriphyIDAMLRequestTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.VeriphyIDAMLResponseTO"
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/IDAML/MONITOR": {
+      "get": {
+        "tags": [
+          "IDAML"
+        ],
+        "summary": "Retrieve an existing ID/AML + PEP/Sanction Monitoring check.",
+        "description": "Retrieves a check that has already been placed",
+        "operationId": "IDAML_GetMonitor",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "checkID",
+            "in": "query",
+            "description": "Veriphy Check ID of the check to be retrieved",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "Service credentials username",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "Service credentials password",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.VeriphyIDAMLMonitorResponseTO"
+            }
+          },
+          "404": {
+            "description": "NotFound"
+          },
+          "400": {
+            "description": "BadRequest",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "IDAML"
+        ],
+        "summary": "Perform an ID/AML + PEP/Sanction monitoring check.",
+        "description": "#VeriphyIDAMLMonitorRequestTO\r\nVeriphyIDAMLMonitorRequestTO is a DTO that contains all the information required by the service to perform an identity check. It consists of 3 objects:\r\n* VeriphyServiceTO\r\n* AuthenticationTO\r\n* ApplicationMonitorTO\r\n\r\n##VeriphyServiceTO\r\nYou must specify the service code in the `VeriphyServiceTO` object. Valid service codes are:\r\n* **IDAMLNOCREDMONITOR** - Anti-money Laundering Check + PEP/Sanction Monitoring\r\n\r\nA formatted PDF can also be returned by the API - simply set the `VeriphyServiceTO` *returnPDF* property to _true_ to receive the PDF as a Base64 encoded string.\r\n\r\n##AuthenticationTO\r\nSpecify your username and password to access the service. Credentials can be obtained from [Veriphy Support](mailto:support@veriphy.co.uk)\r\n\r\n##ApplicationMonitorTO\r\nThe ApplicationMonitorTO object contains the details about the individual to be checked. Each request requires all the transfer objects to be supplied even if they will not be used in the check. Please supply empty string values for unused transfer objects. Refer to the Parameters section below for the request model and an example request value.\r\n* **All** `ApplicantMonitorTO` objects must contain a `NameTO`, `Gender` and `DOB. You can also supply callback email address and/or URL for monitoring updates.\r\n* IDAMLNOCREDMONITOR must contain an `AddressTO` with optional `ContactTO`, `NationalInsuranceNumber`, `InternationalPassportTO` and `DrivingLicenceTO` supported.\r\n* Keep a note of the sanctionResults-&gt;content-&gt;data-&gt;id field in the response. This is required to cancel monitoring using the `Sanction/CancelMonitor` endpoint.",
+        "operationId": "IDAML_PostMonitor",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "check",
+            "in": "body",
+            "description": "The check to be performed",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.VeriphyIDAMLMonitorRequestTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.VeriphyIDAMLMonitorResponseTO"
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Aka": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Asset": {
+      "type": "object",
+      "properties": {
+        "public_url": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Associate": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "association": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Content": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Data"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Data": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "_ref": {
+          "type": "string"
+        },
+        "searcher_id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "assignee_id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "search_profile": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Search_Profile"
+        },
+        "filters": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Filters"
+        },
+        "match_status": {
+          "type": "string"
+        },
+        "risk_level": {
+          "type": "string"
+        },
+        "search_term": {
+          "type": "string"
+        },
+        "total_hits": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "tags": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Tags"
+        },
+        "hits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Hit"
+          }
+        },
+        "share_url": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Doc": {
+      "type": "object",
+      "properties": {
+        "aka": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Aka"
+          }
+        },
+        "associates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Associate"
+          }
+        },
+        "entity_type": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Field"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "last_updated_utc": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "media": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Medium"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Asset"
+          }
+        },
+        "source_notes": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.SourceNotesGroup"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Field": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Filters": {
+      "type": "object",
+      "properties": {
+        "country_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "birth_year": {
+          "type": "string"
+        },
+        "remove_deceased": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "entity_type": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Hit": {
+      "type": "object",
+      "properties": {
+        "doc": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Doc"
+        },
+        "match_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "score": {
+          "format": "float",
+          "type": "number"
+        },
+        "match_status": {
+          "type": "string"
+        },
+        "is_whitelisted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Medium": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "snippet": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Results": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Content"
+        },
+        "status": {
+          "type": "string"
+        },
+        "code": {
+          "format": "int64",
+          "type": "integer"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Search_Profile": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.SourceNote": {
+      "type": "object",
+      "properties": {
+        "aml_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "country_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "listing_ended_utc": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.SourceNotesGroup": {
+      "type": "object",
+      "properties": {
+        "XMLSourceNotes": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "SourceNotes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.SourceNote"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Tags": {
+      "type": "object",
+      "properties": {
+        "Client": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.AccountHolder": {
+      "type": "object",
+      "properties": {
+        "contactId": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Address": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "addressIdentifier": {
+          "type": "string"
+        },
+        "addressType": {
+          "type": "string"
+        },
+        "poBoxNumber": {
+          "type": "string"
+        },
+        "subBuilding": {
+          "type": "string"
+        },
+        "buildingName": {
+          "type": "string"
+        },
+        "buildingNumber": {
+          "type": "string"
+        },
+        "street": {
+          "type": "string"
+        },
+        "postTown": {
+          "type": "string"
+        },
+        "county": {
+          "type": "string"
+        },
+        "postal": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.ApplicantObject": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "contactId": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "applicantType": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Application": {
+      "type": "object",
+      "properties": {
+        "applicants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.ApplicantObject"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.BankAccount": {
+      "type": "object",
+      "properties": {
+        "openedDate": {
+          "type": "string"
+        },
+        "sortCode": {
+          "type": "string"
+        },
+        "clearAccountNumber": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.CCBankCheckResults": {
+      "type": "object",
+      "properties": {
+        "responseHeader": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.ResponseHeader"
+        },
+        "clientResponsePayload": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.ClientResponsePayload"
+        },
+        "originalRequestData": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.OriginalRequestData"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.ClientResponsePayload": {
+      "type": "object",
+      "properties": {
+        "orchestrationDecisions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.OrchestrationDecision"
+          }
+        },
+        "decisionElements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.DecisionElement"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Contact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "person": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Person"
+        },
+        "addresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Address"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.DecisionElement": {
+      "type": "object",
+      "properties": {
+        "serviceName": {
+          "type": "string"
+        },
+        "applicantId": {
+          "type": "string"
+        },
+        "decision": {
+          "type": "string"
+        },
+        "decisionText": {
+          "type": "string"
+        },
+        "matches": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Match"
+          }
+        },
+        "scores": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Score"
+          }
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Record"
+          }
+        },
+        "warningsErrors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.WarningsError"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.ExternalDatum": {
+      "type": "object",
+      "properties": {
+        "fieldName": {
+          "type": "string"
+        },
+        "fieldValue": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.ExternalLookup": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "externalData": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.ExternalDatum"
+          }
+        },
+        "contactId": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.FinancialAccount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "accountType": {
+          "type": "string"
+        },
+        "accountHolders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.AccountHolder"
+          }
+        },
+        "bankAccount": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.BankAccount"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Match": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Name": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "surName": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.OrchestrationDecision": {
+      "type": "object",
+      "properties": {
+        "sequenceId": {
+          "type": "string"
+        },
+        "decisionSource": {
+          "type": "string"
+        },
+        "decision": {
+          "type": "string"
+        },
+        "decisionReasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "score": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "decisionText": {
+          "type": "string"
+        },
+        "nextAction": {
+          "type": "string"
+        },
+        "decisionTime": {
+          "format": "date-time",
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.OriginalRequestData": {
+      "type": "object",
+      "properties": {
+        "application": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Application"
+        },
+        "source": {
+          "type": "string"
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Contact"
+          }
+        },
+        "financialAccounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.FinancialAccount"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.OverallResponse": {
+      "type": "object",
+      "properties": {
+        "decision": {
+          "type": "string"
+        },
+        "decisionText": {
+          "type": "string"
+        },
+        "decisionReasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recommendedNextActions": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "spareObjects": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Person": {
+      "type": "object",
+      "properties": {
+        "typeOfPerson": {
+          "type": "string"
+        },
+        "personIdentifier": {
+          "type": "string"
+        },
+        "personDetails": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.PersonDetails"
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Name"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.PersonDetails": {
+      "type": "object",
+      "properties": {
+        "dateOfBirth": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Record": {
+      "type": "object",
+      "properties": {
+        "externalLookups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.ExternalLookup"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.ResponseHeader": {
+      "type": "object",
+      "properties": {
+        "requestType": {
+          "type": "string"
+        },
+        "clientReferenceId": {
+          "type": "string"
+        },
+        "expRequestId": {
+          "type": "string"
+        },
+        "messageTime": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "overallResponse": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.OverallResponse"
+        },
+        "responseCode": {
+          "type": "string"
+        },
+        "responseType": {
+          "type": "string"
+        },
+        "responseMessage": {
+          "type": "string"
+        },
+        "tenantID": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.Score": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "score": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Data.External.CrossCoreBank.WarningsError": {
+      "type": "object",
+      "properties": {
+        "responseType": {
+          "type": "string"
+        },
+        "responseCode": {
+          "type": "string"
+        },
+        "responseMessage": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.AddressLabel": {
+      "type": "object",
+      "properties": {
+        "Address1": {
+          "type": "string"
+        },
+        "Address2": {
+          "type": "string"
+        },
+        "Address3": {
+          "type": "string"
+        },
+        "Address4": {
+          "type": "string"
+        },
+        "Address5": {
+          "type": "string"
+        },
+        "Postcode": {
+          "type": "string"
+        },
+        "DPS": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.AddressPart": {
+      "type": "object",
+      "properties": {
+        "Forename": {
+          "type": "string"
+        },
+        "MiddleName": {
+          "type": "string"
+        },
+        "Surname": {
+          "type": "string"
+        },
+        "MatchType": {
+          "type": "string"
+        },
+        "DOB": {
+          "type": "string"
+        },
+        "ForenameAppended": {
+          "type": "boolean"
+        },
+        "MiddleNameAppended": {
+          "type": "boolean"
+        },
+        "DOBAppended": {
+          "type": "boolean"
+        },
+        "Telephone": {
+          "type": "string"
+        },
+        "Telephonename": {
+          "type": "string"
+        },
+        "GoneAway": {
+          "type": "string"
+        },
+        "Source": {
+          "type": "string"
+        },
+        "Recency": {
+          "type": "string"
+        },
+        "Occupants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.OccupantPart"
+          }
+        },
+        "Property": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.PropertyPart"
+          }
+        },
+        "AddressValidated": {
+          "type": "boolean"
+        },
+        "Phonematch": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.AgePart": {
+      "type": "object",
+      "properties": {
+        "AgeLower": {
+          "type": "boolean"
+        },
+        "AgeLowerSpecified": {
+          "type": "boolean"
+        },
+        "AgeUpper": {
+          "type": "boolean"
+        },
+        "AgeUpperSpecified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.BankmatchLivePart": {
+      "type": "object",
+      "properties": {
+        "Sortcode": {
+          "type": "string"
+        },
+        "AccountNumber": {
+          "type": "string"
+        },
+        "AccountName": {
+          "type": "string"
+        },
+        "AccountAddress": {
+          "type": "string"
+        },
+        "AccountStatus": {
+          "type": "string"
+        },
+        "ErrorCode": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.BankmatchPart": {
+      "type": "object",
+      "properties": {
+        "BankAccountValid": {
+          "type": "boolean"
+        },
+        "BankName": {
+          "type": "string"
+        },
+        "BranchDetails": {
+          "type": "string"
+        },
+        "BACSPayments": {
+          "type": "boolean"
+        },
+        "CHAPSPayments": {
+          "type": "boolean"
+        },
+        "FasterPayments": {
+          "type": "boolean"
+        },
+        "DirectDebit": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.BirthPart": {
+      "type": "object",
+      "properties": {
+        "ResultIndicator": {
+          "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Maiden": {
+          "type": "string"
+        },
+        "RegDistrict": {
+          "type": "string"
+        },
+        "RegYear": {
+          "type": "string"
+        },
+        "RegMonth": {
+          "type": "string"
+        },
+        "RegQuarter": {
+          "type": "string"
+        },
+        "BirthIndexFlag": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "BirthCertificateFlag": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.CardNumberPart": {
+      "type": "object",
+      "properties": {
+        "CardNumberValid": {
+          "type": "boolean"
+        },
+        "CardTypeValid": {
+          "type": "boolean"
+        },
+        "CardTypeConfirm": {
+          "type": "string"
+        },
+        "CardFraudCheck": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.CardPart": {
+      "type": "object",
+      "properties": {
+        "Authorisation": {
+          "type": "string"
+        },
+        "Address": {
+          "type": "string"
+        },
+        "Postcode": {
+          "type": "string"
+        },
+        "CV2": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.CcjResult": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "dob": {
+          "type": "string"
+        },
+        "address1": {
+          "type": "string"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "address3": {
+          "type": "string"
+        },
+        "address4": {
+          "type": "string"
+        },
+        "address5": {
+          "type": "string"
+        },
+        "postcode": {
+          "type": "string"
+        },
+        "judgementDate": {
+          "type": "string"
+        },
+        "judgementType": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "string"
+        },
+        "caseNumber": {
+          "type": "string"
+        },
+        "courtName": {
+          "type": "string"
+        },
+        "dateEnd": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.CompanyAppointmentsPart": {
+      "type": "object",
+      "properties": {
+        "Title": {
+          "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Address": {
+          "type": "string"
+        },
+        "DOB": {
+          "type": "string"
+        },
+        "Occupation": {
+          "type": "string"
+        },
+        "Nationality": {
+          "type": "string"
+        },
+        "AppointmentDate": {
+          "type": "string"
+        },
+        "AppointmentType": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.CompanyDirectorPart": {
+      "type": "object",
+      "properties": {
+        "MatchType": {
+          "type": "string"
+        },
+        "DateAppointed": {
+          "type": "string"
+        },
+        "CompanyRegNo": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "CompanyName": {
+          "type": "string"
+        },
+        "RegisteredOffice": {
+          "type": "string"
+        },
+        "CompanyAppointments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.CompanyAppointmentsPart"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.CreditActivePart": {
+      "type": "object",
+      "properties": {
+        "InsightAccounts": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "InsightAccountsSpecified": {
+          "type": "boolean"
+        },
+        "InsightLenders": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "InsightLendersSpecified": {
+          "type": "boolean"
+        },
+        "CIFAS": {
+          "type": "string"
+        },
+        "CAISLenders": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "CAISLendersSpecified": {
+          "type": "boolean"
+        },
+        "ActiveInsightAccounts": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ActiveInsightAccountsSpecified": {
+          "type": "boolean"
+        },
+        "ActiveInsightAccountsMonth1": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ActiveInsightAccountsMonth1Specified": {
+          "type": "boolean"
+        },
+        "ActiveInsightAccountsMonth2": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ActiveInsightAccountsMonth2Specified": {
+          "type": "boolean"
+        },
+        "ActiveInsightAccountsMonth3": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ActiveInsightAccountsMonth3Specified": {
+          "type": "boolean"
+        },
+        "ActiveInsightAccountsMonth4": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ActiveInsightAccountsMonth4Specified": {
+          "type": "boolean"
+        },
+        "ActiveInsightAccountsMonth5": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ActiveInsightAccountsMonth5Specified": {
+          "type": "boolean"
+        },
+        "ActiveInsightAccountsMonth6": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ActiveInsightAccountsMonth6Specified": {
+          "type": "boolean"
+        },
+        "ActiveInsightAccountsMonth7": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ActiveInsightAccountsMonth7Specified": {
+          "type": "boolean"
+        },
+        "ActiveInsightAccountsMonth8": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ActiveInsightAccountsMonth8Specified": {
+          "type": "boolean"
+        },
+        "ActiveInsightAccountsMonth9": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ActiveInsightAccountsMonth9Specified": {
+          "type": "boolean"
+        },
+        "ActiveInsightAccountsMonth10": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ActiveInsightAccountsMonth10Specified": {
+          "type": "boolean"
+        },
+        "ActiveInsightAccountsMonth11": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ActiveInsightAccountsMonth11Specified": {
+          "type": "boolean"
+        },
+        "ActiveInsightAccountsMonth12": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ActiveInsightAccountsMonth12Specified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.CredivaPart": {
+      "type": "object",
+      "properties": {
+        "FullER": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.DOBPart": {
+      "type": "object",
+      "properties": {
+        "TracesmartDOB": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ExperianDOB": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ExperianDOBSpecified": {
+          "type": "boolean"
+        },
+        "EquifaxDOB": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "EquifaxDOBSpecified": {
+          "type": "boolean"
+        },
+        "EquifaxDOBStatus": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.DeathscreenResult": {
+      "type": "object",
+      "properties": {
+        "Forename": {
+          "type": "string"
+        },
+        "SecondName": {
+          "type": "string"
+        },
+        "ThirdName": {
+          "type": "string"
+        },
+        "FourthName": {
+          "type": "string"
+        },
+        "Surname": {
+          "type": "string"
+        },
+        "District": {
+          "type": "string"
+        },
+        "DOB": {
+          "type": "string"
+        },
+        "DOD": {
+          "type": "string"
+        },
+        "DOR": {
+          "type": "string"
+        },
+        "VolumeNo": {
+          "type": "string"
+        },
+        "DistNo": {
+          "type": "string"
+        },
+        "PageNo": {
+          "type": "string"
+        },
+        "RegNo": {
+          "type": "string"
+        },
+        "EntryNo": {
+          "type": "string"
+        },
+        "PlaceOfBirth": {
+          "type": "string"
+        },
+        "MaidenName": {
+          "type": "string"
+        },
+        "GROReference": {
+          "type": "string"
+        },
+        "address1": {
+          "type": "string"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "address3": {
+          "type": "string"
+        },
+        "address4": {
+          "type": "string"
+        },
+        "address5": {
+          "type": "string"
+        },
+        "postcode": {
+          "type": "string"
+        },
+        "MatchType": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.DocumentAuthenticationPart": {
+      "type": "object",
+      "properties": {
+        "DocAuthStatus": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "DocumentType": {
+          "type": "string"
+        },
+        "DocumentName": {
+          "type": "string"
+        },
+        "DocumentAlerts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "DocumentOCR": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.DrivingLicencePart": {
+      "type": "object",
+      "properties": {
+        "ResultFlag": {
+          "type": "boolean"
+        },
+        "MiddleNameWarning": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.ErrorPart": {
+      "type": "object",
+      "properties": {
+        "Service": {
+          "type": "string"
+        },
+        "Details": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.IDCardPart": {
+      "type": "object",
+      "properties": {
+        "MRZValid": {
+          "type": "boolean"
+        },
+        "DOBValid": {
+          "type": "boolean"
+        },
+        "GenderValid": {
+          "type": "boolean"
+        },
+        "ExpiryValid": {
+          "type": "boolean"
+        },
+        "CountryCodeValid": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.InsolvencyResult": {
+      "type": "object",
+      "properties": {
+        "Type": {
+          "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "CaseNo": {
+          "type": "string"
+        },
+        "Address": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.AddressLabel"
+        },
+        "DOB": {
+          "type": "string"
+        },
+        "Court": {
+          "type": "string"
+        },
+        "StartDate": {
+          "type": "string"
+        },
+        "Status": {
+          "type": "string"
+        },
+        "Occupation": {
+          "type": "string"
+        },
+        "Aliases": {
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "ServiceOffice": {
+          "type": "string"
+        },
+        "TelephoneNumber": {
+          "type": "string"
+        },
+        "CaseType": {
+          "type": "string"
+        },
+        "TradingNames": {
+          "type": "string"
+        },
+        "DebtTotal": {
+          "type": "string"
+        },
+        "AssetTotal": {
+          "type": "string"
+        },
+        "PreviousAddress": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.AddressLabel"
+        },
+        "PresentationDate": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.MarriagePart": {
+      "type": "object",
+      "properties": {
+        "MarriageIndexMatch": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "MarriageCertificateMatch": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.MpanPart": {
+      "type": "object",
+      "properties": {
+        "ResultFlag": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.NHSPart": {
+      "type": "object",
+      "properties": {
+        "ResultFlag": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.NIPart": {
+      "type": "object",
+      "properties": {
+        "ResultFlag": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.NoticeOfCorrectionPart": {
+      "type": "object",
+      "properties": {
+        "Note": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.OccupantPart": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "DOB": {
+          "type": "string"
+        },
+        "Recency": {
+          "type": "string"
+        },
+        "Residency": {
+          "type": "string"
+        },
+        "ResidencyScore": {
+          "type": "string"
+        },
+        "Telephone": {
+          "type": "string"
+        },
+        "TelephoneName": {
+          "type": "string"
+        },
+        "Source": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.OneTimePasswordPart": {
+      "type": "object",
+      "properties": {
+        "Landline1": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.OneTimePasswordResultPart"
+        },
+        "Landline2": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.OneTimePasswordResultPart"
+        },
+        "Mobile1": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.OneTimePasswordResultPart"
+        },
+        "Mobile2": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.OneTimePasswordResultPart"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.OneTimePasswordResultPart": {
+      "type": "object",
+      "properties": {
+        "Number": {
+          "type": "string"
+        },
+        "PhoneMatchSources": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "Status": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "IndicatedStatus": {
+          "type": "string"
+        },
+        "IndicatedLocation": {
+          "type": "string"
+        },
+        "Result": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.OnlineProfilePart": {
+      "type": "object",
+      "properties": {
+        "OnlineProfileStatus": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "TwitterUsername": {
+          "type": "string"
+        },
+        "TwitterActivityMonth1": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "TwitterActivityMonth1Specified": {
+          "type": "boolean"
+        },
+        "TwitterActivityMonth2": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "TwitterActivityMonth2Specified": {
+          "type": "boolean"
+        },
+        "TwitterActivityMonth3": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "TwitterActivityMonth3Specified": {
+          "type": "boolean"
+        },
+        "TwitterActivityMonth4": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "TwitterActivityMonth4Specified": {
+          "type": "boolean"
+        },
+        "TwitterActivityMonth5": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "TwitterActivityMonth5Specified": {
+          "type": "boolean"
+        },
+        "TwitterActivityMonth6": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "TwitterActivityMonth6Specified": {
+          "type": "boolean"
+        },
+        "TwitterActivityMonth7": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "TwitterActivityMonth7Specified": {
+          "type": "boolean"
+        },
+        "TwitterActivityMonth8": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "TwitterActivityMonth8Specified": {
+          "type": "boolean"
+        },
+        "TwitterActivityMonth9": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "TwitterActivityMonth9Specified": {
+          "type": "boolean"
+        },
+        "TwitterActivityMonth10": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "TwitterActivityMonth10Specified": {
+          "type": "boolean"
+        },
+        "TwitterActivityMonth11": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "TwitterActivityMonth11Specified": {
+          "type": "boolean"
+        },
+        "TwitterActivityMonth12": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "TwitterActivityMonth12Specified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.PassportPart": {
+      "type": "object",
+      "properties": {
+        "MRZValid": {
+          "type": "boolean"
+        },
+        "DOBValid": {
+          "type": "boolean"
+        },
+        "GenderValid": {
+          "type": "boolean"
+        },
+        "ExpiryValid": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.PollNumberPart": {
+      "type": "object",
+      "properties": {
+        "PollNumberMatch": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.PropertyPart": {
+      "type": "object",
+      "properties": {
+        "Type": {
+          "type": "string"
+        },
+        "Tenure": {
+          "type": "string"
+        },
+        "Date": {
+          "type": "string"
+        },
+        "Price": {
+          "type": "string"
+        },
+        "Silhouette": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.PrsPart": {
+      "type": "object",
+      "properties": {
+        "MatchResult": {
+          "type": "string"
+        },
+        "PropertyOwnership": {
+          "type": "string"
+        },
+        "TitleNumber": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.Result": {
+      "type": "object",
+      "properties": {
+        "Summary": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.SummaryPart"
+        },
+        "Address": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.AddressPart"
+        },
+        "Smartlink": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.SmartlinkPart"
+          }
+        },
+        "Deathscreen": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.DeathscreenResult"
+          }
+        },
+        "DrivingLicence": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.DrivingLicencePart"
+        },
+        "DOB": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.DOBPart"
+        },
+        "Age": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.AgePart"
+        },
+        "NHS": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.NHSPart"
+        },
+        "NI": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.NIPart"
+        },
+        "Sanction": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.SanctionPart"
+          }
+        },
+        "Passport": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.PassportPart"
+        },
+        "Birth": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.BirthPart"
+        },
+        "CardAVS": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.CardPart"
+        },
+        "CardNumber": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.CardNumberPart"
+        },
+        "Mpan": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.MpanPart"
+        },
+        "Insolvency": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.InsolvencyResult"
+          }
+        },
+        "Bankmatch": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.BankmatchPart"
+        },
+        "Crediva": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.CredivaPart"
+        },
+        "Ccj": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.CcjResult"
+          }
+        },
+        "CreditActive": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.CreditActivePart"
+        },
+        "TravelVisa": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.TravelVisaPart"
+        },
+        "IDCard": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.IDCardPart"
+        },
+        "BankmatchLive": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.BankmatchLivePart"
+        },
+        "SearchActivity": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.SearchActivityPart"
+          }
+        },
+        "CompanyDirector": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.CompanyDirectorPart"
+          }
+        },
+        "NoticeOfCorrection": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.NoticeOfCorrectionPart"
+        },
+        "PRS": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.PrsPart"
+        },
+        "Marriage": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.MarriagePart"
+        },
+        "PollNumber": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.PollNumberPart"
+        },
+        "OnlineProfile": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.OnlineProfilePart"
+        },
+        "DocumentAuthentication": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.DocumentAuthenticationPart"
+          }
+        },
+        "OneTimePassword": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.OneTimePasswordPart"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.SanctionAddressPart": {
+      "type": "object",
+      "properties": {
+        "Address1": {
+          "type": "string"
+        },
+        "Address2": {
+          "type": "string"
+        },
+        "Address3": {
+          "type": "string"
+        },
+        "Postcode": {
+          "type": "string"
+        },
+        "City": {
+          "type": "string"
+        },
+        "Country": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.SanctionPart": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Recency": {
+          "type": "string"
+        },
+        "MatchScore": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "Source": {
+          "type": "string"
+        },
+        "Type": {
+          "type": "string"
+        },
+        "Country": {
+          "type": "string"
+        },
+        "Addresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.SanctionAddressPart"
+          }
+        },
+        "Aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Exceptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Positions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "DOB": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.SearchActivityHistoryPart": {
+      "type": "object",
+      "properties": {
+        "Date": {
+          "type": "string"
+        },
+        "BusinessActivity": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.SearchActivityPart": {
+      "type": "object",
+      "properties": {
+        "ProfileType": {
+          "type": "string"
+        },
+        "OneMonth": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ThreeMonth": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "SixMonth": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "History": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.SearchActivityHistoryPart"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.SmartlinkPart": {
+      "type": "object",
+      "properties": {
+        "Title": {
+          "type": "string"
+        },
+        "Forename": {
+          "type": "string"
+        },
+        "Middle": {
+          "type": "string"
+        },
+        "Surname": {
+          "type": "string"
+        },
+        "DOB": {
+          "type": "string"
+        },
+        "Address": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.AddressLabel"
+        },
+        "Recency": {
+          "type": "string"
+        },
+        "Residency": {
+          "type": "string"
+        },
+        "LinkSource": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.SummaryPart": {
+      "type": "object",
+      "properties": {
+        "Status": {
+          "type": "boolean"
+        },
+        "ID": {
+          "type": "string"
+        },
+        "IKey": {
+          "type": "string"
+        },
+        "equifaxUsername": {
+          "type": "string"
+        },
+        "Reference": {
+          "type": "string"
+        },
+        "Scorecard": {
+          "type": "string"
+        },
+        "Smartscore": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "ResultText": {
+          "type": "string"
+        },
+        "ProfileURL": {
+          "type": "string"
+        },
+        "Credits": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "Errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.ErrorPart"
+          }
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.IDUService.TravelVisaPart": {
+      "type": "object",
+      "properties": {
+        "MRZValid": {
+          "type": "boolean"
+        },
+        "InDate": {
+          "type": "boolean"
+        },
+        "UKResidenceValid": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.CCBank.CCBankAddressTO": {
+      "required": [
+        "address1",
+        "address2",
+        "address3",
+        "address4",
+        "postTown",
+        "postCode",
+        "country"
+      ],
+      "type": "object",
+      "properties": {
+        "address1": {
+          "type": "string"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "address3": {
+          "type": "string"
+        },
+        "address4": {
+          "type": "string"
+        },
+        "postTown": {
+          "type": "string"
+        },
+        "county": {
+          "type": "string"
+        },
+        "postCode": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.CCBank.CCBankCheckApplicationTO": {
+      "required": [
+        "ccbankApplicant",
+        "reference"
+      ],
+      "type": "object",
+      "properties": {
+        "ccbankApplicant": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.CCBank.CCBankTO"
+        },
+        "reference": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.CCBank.CCBankDetailsTO": {
+      "required": [
+        "accountNumber",
+        "sortCode",
+        "accountType"
+      ],
+      "type": "object",
+      "properties": {
+        "accountNumber": {
+          "type": "string"
+        },
+        "sortCode": {
+          "type": "string"
+        },
+        "accountType": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.CCBank.CCBankNameTO": {
+      "required": [
+        "forename",
+        "otherNames",
+        "surname"
+      ],
+      "type": "object",
+      "properties": {
+        "forename": {
+          "type": "string"
+        },
+        "otherNames": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.CCBank.CCBankTO": {
+      "required": [
+        "addresses",
+        "applicantId",
+        "names",
+        "bankDetails",
+        "emailAddress",
+        "mobileNumber"
+      ],
+      "type": "object",
+      "properties": {
+        "addresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.CCBank.CCBankAddressTO"
+          }
+        },
+        "applicantId": {
+          "type": "string"
+        },
+        "dateOfBirth": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.CCBank.CCBankNameTO"
+          }
+        },
+        "bankDetails": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.CCBank.CCBankDetailsTO"
+        },
+        "emailAddress": {
+          "type": "string"
+        },
+        "mobileNumber": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.CCBank.VeriphyCCBankCheckRequestTO": {
+      "required": [
+        "applicationTO",
+        "authenticationTO",
+        "veriphyServiceTO"
+      ],
+      "type": "object",
+      "properties": {
+        "applicationTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.CCBank.CCBankCheckApplicationTO"
+        },
+        "authenticationTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.Shared.AuthenticationTO"
+        },
+        "veriphyServiceTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.Shared.VeriphyServiceTO"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.CCBank.VeriphyCCBankCheckResponseTO": {
+      "required": [
+        "applicant"
+      ],
+      "type": "object",
+      "properties": {
+        "applicant": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.CCBank.CCBankTO"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "responseResult": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.CrossCoreBank.CCBankCheckResults"
+        },
+        "responseEncodedPdf": {
+          "type": "string"
+        },
+        "veriphyCheckId": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.AddressTO": {
+      "required": [
+        "address1",
+        "address2",
+        "address3",
+        "address4",
+        "postTown",
+        "county",
+        "postCode",
+        "country"
+      ],
+      "type": "object",
+      "properties": {
+        "address1": {
+          "type": "string"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "address3": {
+          "type": "string"
+        },
+        "address4": {
+          "type": "string"
+        },
+        "postTown": {
+          "type": "string"
+        },
+        "county": {
+          "type": "string"
+        },
+        "postCode": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.ApplicantMonitorTO": {
+      "required": [
+        "addresses",
+        "applicantId",
+        "bankTO",
+        "contactTO",
+        "dateOfBirth",
+        "driversLicenceTO",
+        "gender",
+        "idCardTO",
+        "internationalPassportTO",
+        "mothersMaidenName",
+        "names",
+        "nationalInsuranceNumber",
+        "travelVisaTO"
+      ],
+      "type": "object",
+      "properties": {
+        "addresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.AddressTO"
+          }
+        },
+        "applicantId": {
+          "type": "string"
+        },
+        "bankTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.BankTO"
+        },
+        "contactTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.ContactTO"
+        },
+        "dateOfBirth": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "driversLicenceTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.DriversLicenceTO"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "idCardTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.IDCardTO"
+        },
+        "internationalPassportTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.InternationalPassportTO"
+        },
+        "mothersMaidenName": {
+          "type": "string"
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.NameTO"
+          }
+        },
+        "nationalInsuranceNumber": {
+          "type": "string"
+        },
+        "travelVisaTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.TravelVisaTO"
+        },
+        "CallbackEmail": {
+          "type": "string"
+        },
+        "CallbackUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.ApplicantTO": {
+      "required": [
+        "addresses",
+        "applicantId",
+        "bankTO",
+        "contactTO",
+        "dateOfBirth",
+        "driversLicenceTO",
+        "gender",
+        "idCardTO",
+        "internationalPassportTO",
+        "mothersMaidenName",
+        "names",
+        "nationalInsuranceNumber",
+        "travelVisaTO"
+      ],
+      "type": "object",
+      "properties": {
+        "addresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.AddressTO"
+          }
+        },
+        "applicantId": {
+          "type": "string"
+        },
+        "bankTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.BankTO"
+        },
+        "contactTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.ContactTO"
+        },
+        "dateOfBirth": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "driversLicenceTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.DriversLicenceTO"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "idCardTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.IDCardTO"
+        },
+        "internationalPassportTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.InternationalPassportTO"
+        },
+        "mothersMaidenName": {
+          "type": "string"
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.NameTO"
+          }
+        },
+        "nationalInsuranceNumber": {
+          "type": "string"
+        },
+        "travelVisaTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.TravelVisaTO"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.ApplicationMonitorTO": {
+      "required": [
+        "applicants",
+        "reference"
+      ],
+      "type": "object",
+      "properties": {
+        "applicants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.ApplicantMonitorTO"
+          }
+        },
+        "reference": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.ApplicationTO": {
+      "required": [
+        "applicants",
+        "reference"
+      ],
+      "type": "object",
+      "properties": {
+        "applicants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.ApplicantTO"
+          }
+        },
+        "reference": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.BankTO": {
+      "required": [
+        "accountNumber",
+        "sortCode"
+      ],
+      "type": "object",
+      "properties": {
+        "accountNumber": {
+          "type": "string"
+        },
+        "sortCode": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.ContactTO": {
+      "required": [
+        "telephoneNumber",
+        "alternativeTelephoneNumber",
+        "mobileTelephoneNumber",
+        "faxNumber",
+        "emailAddress"
+      ],
+      "type": "object",
+      "properties": {
+        "telephoneNumber": {
+          "type": "string"
+        },
+        "alternativeTelephoneNumber": {
+          "type": "string"
+        },
+        "mobileTelephoneNumber": {
+          "type": "string"
+        },
+        "faxNumber": {
+          "type": "string"
+        },
+        "emailAddress": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.DriversLicenceTO": {
+      "required": [
+        "licenceNumber1",
+        "licenceNumber2",
+        "licenceNumber3",
+        "licenceNumber4"
+      ],
+      "type": "object",
+      "properties": {
+        "licenceNumber1": {
+          "type": "string"
+        },
+        "licenceNumber2": {
+          "type": "string"
+        },
+        "licenceNumber3": {
+          "type": "string"
+        },
+        "licenceNumber4": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.IDCardTO": {
+      "required": [
+        "line10",
+        "line1",
+        "line2",
+        "line3",
+        "line4",
+        "line5",
+        "line6",
+        "line7",
+        "line8",
+        "line9"
+      ],
+      "type": "object",
+      "properties": {
+        "line10": {
+          "type": "string"
+        },
+        "line1": {
+          "type": "string"
+        },
+        "line2": {
+          "type": "string"
+        },
+        "line3": {
+          "type": "string"
+        },
+        "line4": {
+          "type": "string"
+        },
+        "line5": {
+          "type": "string"
+        },
+        "line6": {
+          "type": "string"
+        },
+        "line7": {
+          "type": "string"
+        },
+        "line8": {
+          "type": "string"
+        },
+        "line9": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.InternationalPassportTO": {
+      "required": [
+        "passportNumber1",
+        "passportNumber2",
+        "passportNumber3",
+        "passportNumber4",
+        "passportNumber5",
+        "passportNumber6",
+        "passportNumber7",
+        "passportNumber8",
+        "passportNumber9"
+      ],
+      "type": "object",
+      "properties": {
+        "passportNumber1": {
+          "type": "string"
+        },
+        "passportNumber2": {
+          "type": "string"
+        },
+        "passportNumber3": {
+          "type": "string"
+        },
+        "passportNumber4": {
+          "type": "string"
+        },
+        "passportNumber5": {
+          "type": "string"
+        },
+        "passportNumber6": {
+          "type": "string"
+        },
+        "passportNumber7": {
+          "type": "string"
+        },
+        "passportNumber8": {
+          "type": "string"
+        },
+        "passportNumber9": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.NameTO": {
+      "required": [
+        "title",
+        "forename",
+        "otherNames",
+        "surname"
+      ],
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "forename": {
+          "type": "string"
+        },
+        "otherNames": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.TravelVisaTO": {
+      "required": [
+        "line1",
+        "line2",
+        "line3",
+        "line4",
+        "line5",
+        "line6",
+        "line7",
+        "line8",
+        "line9"
+      ],
+      "type": "object",
+      "properties": {
+        "line1": {
+          "type": "string"
+        },
+        "line2": {
+          "type": "string"
+        },
+        "line3": {
+          "type": "string"
+        },
+        "line4": {
+          "type": "string"
+        },
+        "line5": {
+          "type": "string"
+        },
+        "line6": {
+          "type": "string"
+        },
+        "line7": {
+          "type": "string"
+        },
+        "line8": {
+          "type": "string"
+        },
+        "line9": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.VeriphyIDAMLMonitorRequestTO": {
+      "required": [
+        "applicationTO",
+        "authenticationTO",
+        "veriphyServiceTO"
+      ],
+      "type": "object",
+      "properties": {
+        "applicationTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.ApplicationMonitorTO"
+        },
+        "authenticationTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.Shared.AuthenticationTO"
+        },
+        "veriphyServiceTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.Shared.VeriphyServiceTO"
+        }
+      },
+      "xml": {
+        "name": "VeriphyIDAMLMonitorRequestTO"
+      },
+      "example": {
+        "applicationTO": {
+          "applicants": [
+            {
+              "addresses": [
+                {
+                  "address1": "68 Jesmond Road West",
+                  "address2": "Jesmond",
+                  "address3": "",
+                  "address4": "",
+                  "postTown": "Newcastle",
+                  "county": "",
+                  "postCode": "NE2 4PQ",
+                  "country": "GB"
+                }
+              ],
+              "applicantId": "",
+              "bankTO": {
+                "accountNumber": "",
+                "sortCode": ""
+              },
+              "contactTO": {
+                "telephoneNumber": "",
+                "alternativeTelephoneNumber": "",
+                "mobileTelephoneNumber": "",
+                "faxNumber": "",
+                "emailAddress": ""
+              },
+              "dateOfBirth": "1996-05-09T04:10:20.6142002+01:00",
+              "driversLicenceTO": {
+                "licenceNumber1": "",
+                "licenceNumber2": "",
+                "licenceNumber3": "",
+                "licenceNumber4": ""
+              },
+              "gender": "M",
+              "idCardTO": {
+                "line10": "",
+                "line1": "",
+                "line2": "",
+                "line3": "",
+                "line4": "",
+                "line5": "",
+                "line6": "",
+                "line7": "",
+                "line8": "",
+                "line9": ""
+              },
+              "internationalPassportTO": {
+                "passportNumber1": "",
+                "passportNumber2": "",
+                "passportNumber3": "",
+                "passportNumber4": "",
+                "passportNumber5": "",
+                "passportNumber6": "",
+                "passportNumber7": "",
+                "passportNumber8": "",
+                "passportNumber9": ""
+              },
+              "mothersMaidenName": "",
+              "names": [
+                {
+                  "title": "Mr",
+                  "forename": "Test",
+                  "otherNames": "",
+                  "surname": "Tester"
+                }
+              ],
+              "nationalInsuranceNumber": "",
+              "travelVisaTO": {
+                "line1": "",
+                "line2": "",
+                "line3": "",
+                "line4": "",
+                "line5": "",
+                "line6": "",
+                "line7": "",
+                "line8": "",
+                "line9": ""
+              },
+              "callbackEmail": "",
+              "callbackUrl": ""
+            }
+          ],
+          "reference": "Veriphy API Test"
+        },
+        "authenticationTO": {
+          "password": "",
+          "username": ""
+        },
+        "veriphyServiceTO": {
+          "returnPDF": true,
+          "serviceCode": "IDAMLNOCREDMONITOR"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.VeriphyIDAMLMonitorResponseTO": {
+      "type": "object",
+      "properties": {
+        "applicant": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.ApplicantTO"
+        },
+        "responseEncodedPdf": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "responseResult": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.VeriphyIDAMLMonitorResult"
+        },
+        "veriphyCheckId": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "VeriphyIDAMLMonitorResponseTO"
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.VeriphyIDAMLMonitorResult": {
+      "type": "object",
+      "properties": {
+        "iduResult": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.Result"
+        },
+        "sanctionResults": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Data.External.ComplyAdvantage.Results"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.VeriphyIDAMLRequestTO": {
+      "required": [
+        "applicationTO",
+        "authenticationTO",
+        "veriphyServiceTO"
+      ],
+      "type": "object",
+      "properties": {
+        "applicationTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.ApplicationTO"
+        },
+        "authenticationTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.Shared.AuthenticationTO"
+        },
+        "veriphyServiceTO": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.Shared.VeriphyServiceTO"
+        }
+      },
+      "xml": {
+        "name": "VeriphyIDAMLRequestTO"
+      },
+      "example": {
+        "applicationTO": {
+          "applicants": [
+            {
+              "addresses": [
+                {
+                  "address1": "68 Jesmond Road West",
+                  "address2": "Jesmond",
+                  "address3": "",
+                  "address4": "",
+                  "postTown": "Newcastle",
+                  "county": "",
+                  "postCode": "NE2 4PQ",
+                  "country": "GB"
+                }
+              ],
+              "applicantId": "",
+              "bankTO": {
+                "accountNumber": "",
+                "sortCode": ""
+              },
+              "contactTO": {
+                "telephoneNumber": "",
+                "alternativeTelephoneNumber": "",
+                "mobileTelephoneNumber": "",
+                "faxNumber": "",
+                "emailAddress": ""
+              },
+              "dateOfBirth": "1996-05-09T04:10:20.6142002+01:00",
+              "driversLicenceTO": {
+                "licenceNumber1": "",
+                "licenceNumber2": "",
+                "licenceNumber3": "",
+                "licenceNumber4": ""
+              },
+              "gender": "M",
+              "idCardTO": {
+                "line10": "",
+                "line1": "",
+                "line2": "",
+                "line3": "",
+                "line4": "",
+                "line5": "",
+                "line6": "",
+                "line7": "",
+                "line8": "",
+                "line9": ""
+              },
+              "internationalPassportTO": {
+                "passportNumber1": "",
+                "passportNumber2": "",
+                "passportNumber3": "",
+                "passportNumber4": "",
+                "passportNumber5": "",
+                "passportNumber6": "",
+                "passportNumber7": "",
+                "passportNumber8": "",
+                "passportNumber9": ""
+              },
+              "mothersMaidenName": "",
+              "names": [
+                {
+                  "title": "Mr",
+                  "forename": "Test",
+                  "otherNames": "",
+                  "surname": "Tester"
+                }
+              ],
+              "nationalInsuranceNumber": "",
+              "travelVisaTO": {
+                "line1": "",
+                "line2": "",
+                "line3": "",
+                "line4": "",
+                "line5": "",
+                "line6": "",
+                "line7": "",
+                "line8": "",
+                "line9": ""
+              }
+            }
+          ],
+          "reference": "Veriphy API Test"
+        },
+        "authenticationTO": {
+          "password": "",
+          "username": ""
+        },
+        "veriphyServiceTO": {
+          "returnPDF": true,
+          "serviceCode": "IDAML"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.IDAML.VeriphyIDAMLResponseTO": {
+      "type": "object",
+      "properties": {
+        "applicant": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.Interfaces.IDAML.ApplicantTO"
+        },
+        "responseEncodedPdf": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "responseResult": {
+          "$ref": "#/definitions/Arkitec.Veriphy.Common.IDUService.Result"
+        },
+        "veriphyCheckId": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "VeriphyIDAMLResponseTO"
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.Shared.AuthenticationTO": {
+      "required": [
+        "password",
+        "username"
+      ],
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "Arkitec.Veriphy.Common.Interfaces.Shared.VeriphyServiceTO": {
+      "required": [
+        "returnPDF",
+        "serviceCode"
+      ],
+      "type": "object",
+      "properties": {
+        "returnPDF": {
+          "type": "boolean"
+        },
+        "serviceCode": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
